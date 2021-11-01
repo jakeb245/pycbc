@@ -331,6 +331,39 @@ def get_coinc_indexes(idx_dict, time_delay_idx):
                    np.unique(coinc_list, return_counts=True)[1]>1]
     return coinc_idx
 
+def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
+           power_chisq, power_dof, snr_threshold=6, sngl_thresh=4.0, chisq_threshold=None):
+    # Some variable definitions
+    index = 4.0
+    nhigh = 3.0
+
+    # Coherent SNR cut
+    if coherent_snr < 6:
+        return 0
+
+    # Reduced chisqs for new snr calculations
+    reduced_bank = bank_chisq / bank_dof
+    reduced_auto = auto_chisq / auto_dof
+    reduced_power = power_chisq / power_dof
+
+    # New bank SNR calculation
+    if reduced_bank > 1:
+        new_bank = coherent_snr / ((1+reduced_bank**(index/nhigh))/2)**(1.0/index)
+    else:
+        new_bank = coherent_snr
+
+    # New auto SNR calculation
+    if reduced_auto > 1:
+        new_auto = coherent_snr / ((1+reduced_auto**(index/nhigh))/2)**(1.0/index)
+    else:
+        new_auto = coherent_snr
+
+    # New power SNR calculation (used later)
+    if reduced_power > 1:
+        new_power = coherent_snr / ((1+reduced_power**(index/nhigh))/2)**(1.0/index)
+    else:
+        new_power = coherent_snr
+
 strain_dict = strain.from_cli_multi_ifos(
     opt, opt.instruments, inj_filter_rejector,
     dyn_range_fac=DYN_RANGE_FAC
