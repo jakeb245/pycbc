@@ -757,5 +757,13 @@ with ctx:
         event_mgr.finalize_template_events()
 event_mgr.write_events(opt.output)
 
+# TODO: Finish writing output script
+import csv
+file_name = 'BestNR_output.csv'
+with open(file_name, 'wt') as file:
+    writer = csv.writer(file)
+    header = ['End time', 'Coherent SNR', 'H1 SNR', 'L1 SNR', 'Power chisq',
+              'Bank chisq', 'Auto chisq', 'BestNR']
+
 logging.info("Finished")
 logging.info("Time to complete analysis: %s" % str(time.time() - time_init))
