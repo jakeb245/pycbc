@@ -364,6 +364,22 @@ def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
     else:
         new_power = coherent_snr
 
+    # Now cut based on bank and auto
+    if (new_bank < chisq_threshold) or (new_auto < chisq_threshold):
+        return 0
+
+    # Single det snr cut
+    # NOTE: pass single det snr as a tuple
+    for snr in sngl_snr:
+        if snr < sngl_thresh:
+            return 0
+
+    # NOTE: I'm ignoring the null SNR cuts for now
+    # Which means use a 1 or 2 ifo run
+
+    # And now for the final BestNR, just reweighted by power chisq
+    return new_power
+
 strain_dict = strain.from_cli_multi_ifos(
     opt, opt.instruments, inj_filter_rejector,
     dyn_range_fac=DYN_RANGE_FAC
