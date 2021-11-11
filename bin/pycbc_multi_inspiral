@@ -350,6 +350,7 @@ def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
 
     Returns
     -------
+    bestnr: tuple of bestnr per ifo
 
     """
     # Some variable definitions
@@ -364,31 +365,33 @@ def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
         chisq_threshold = snr_threshold
 
     # Reduced chisqs for new snr calculations
-    reduced_bank_array = bank_chisq / bank_dof
-    reduced_auto_array = auto_chisq / auto_dof
-    reduced_power_array = power_chisq / power_dof
+    reduced_bank = bank_chisq / bank_dof
+    reduced_auto = auto_chisq / auto_dof
+    reduced_power = power_chisq / power_dof
 
     # New bank SNR calculation
-    # TODO: figure out what new bank is and then use that for all three chisqs
-    for reduced_bank in reduced_bank_array:
-        if reduced_bank > 1:
-            new_bank = coherent_snr / ((1+reduced_bank**(index/nhigh))/2)**(1.0/index)
+    new_bank = np.ones(len(bank_chisq))
+    for i in range(len(new_bank)):
+        if reduced_bank[i] > 1:
+            new_bank[i]= sngl_snr[i] / ((1+reduced_bank[i]**(index/nhigh))/2)**(1.0/index)
         else:
-            new_bank = coherent_snr
+            new_bank[i]= sngl_snr[i]
 
     # New auto SNR calculation
-    # TODO: redo this
-    if reduced_auto > 1:
-        new_auto = coherent_snr / ((1+reduced_auto**(index/nhigh))/2)**(1.0/index)
-    else:
-        new_auto = coherent_snr
+    new_auto = np.ones(len(auto_chisq))
+    for i in range(len(new_auto)):
+        if reduced_auto > 1:
+            new_auto[i] = sngl_snr[i] / ((1+reduced_auto[i]**(index/nhigh))/2)**(1.0/index)
+        else:
+            new_auto[i] = sngl_snr[i]
 
     # New power SNR calculation (used later)
-    # TODO: redo this
-    if reduced_power > 1:
-        new_power = coherent_snr / ((1+reduced_power**(index/nhigh))/2)**(1.0/index)
-    else:
-        new_power = coherent_snr
+    new_power = np.ones(len(power_chisq))
+    for i in range(len(new_power)):
+        if reduced_power[i] > 1:
+            new_power[i] = sngl_snr[i] / ((1+reduced_power[i]**(index/nhigh))/2)**(1.0/index)
+        else:
+            new_power[i] = sngl_snr[i]
 
     # Now cut based on bank and auto
     if (new_bank < chisq_threshold) or (new_auto < chisq_threshold):
