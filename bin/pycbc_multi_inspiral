@@ -798,6 +798,33 @@ with open(file_name, 'wt') as file:
     writer = csv.writer(file)
     header = ['End time', 'Coherent SNR', 'H1 SNR', 'L1 SNR', 'Power chisq H1', 'Power chisq L1',
               'Bank chisq H1', 'Bank Chisq L1', 'Auto chisq H1', 'Auto chisq L1', 'BestNR H1', 'BestNR L1']
+    end_time = []
+    coh_snr = []
+    snr_h1 = []
+    snr_l1 = []
+    power_h1 = []
+    power_l1 = []
+    bank_h1 = []
+    bank_l1 = []
+    auto_h1 = []
+    auto_l1 = []
+    # TODO: Get the variables for bestnr
+    # bestnr_tuple = bestnr()
+
+    # End time
+    for index in network_out_vals['time_index']:
+        end_time.append((index*opt.sample_rate) + opt.gps_start_time)
+
+    # Coherent snr
+    for i in network_out_vals['coherent_snr']:
+        coh_snr.append(i)
+
+    # H1 SNR
+    for i in ifo_out_vals['H1']:
+        continue
+
+    # Moving work to a new executable for ease
+
 
 logging.info("Finished")
 logging.info("Time to complete analysis: %s" % str(time.time() - time_init))
