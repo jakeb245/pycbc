@@ -88,6 +88,12 @@ if __name__ == '__main__':
     import csv
     import h5py
     file_name = 'BestNR_output.csv'
+    in_file = input('Enter the data filename:\n')
+    hdf_file = h5py.File(in_file)
+    net = hdf_file['network']
+    h1 = hdf_file['H1']
+    l1 = hdf_file['L1']
+
     with open(file_name, 'wt') as file:
         writer = csv.writer(file)
         header = ['End time', 'Coherent SNR', 'H1 SNR', 'L1 SNR', 'Power chisq H1', 'Power chisq L1',
@@ -102,7 +108,50 @@ if __name__ == '__main__':
         bank_l1 = []
         auto_h1 = []
         auto_l1 = []
-        # TODO: Get the variables for bestnr
-        # bestnr_tuple = bestnr()
+        bestnr_h1 = []
+        bestnr_l1 = []
 
+        # End time
+        for i in net['end_time_gc']:
+            end_time.append(i)
 
+        # Coherent SNR
+        for i in net['coherent_snr']:
+            coh_snr.append(i)
+
+        # SNR H1
+        for i in h1['snr']:
+            snr_h1.append(i)
+
+        # SNR L1
+        for i in l1['snr']:
+            snr_l1.append(i)
+
+        # Power chisq
+        for i in h1['chisq']:
+            power_h1.append(i)
+
+        for i in l1['chisq']:
+            power_l1.append(i)
+
+        # Bank chisq
+        for i in h1['bank_chisq']:
+            bank_h1.append(i)
+
+        for i in l1['bank_chisq']:
+            bank_l1.append(i)
+
+        # Auto chisq
+        for i in h1['cont_chisq']:
+            power_h1.append(i)
+
+        for i in l1['cont_chisq']:
+            power_l1.append(i)
+
+        # Now get bestNR
+        # get chisq dofs
+        power_dof = h1['chisq_dof'][0]
+        bank_dof = h1['bank_chisq_dof'][0]
+        auto_dof = h1['cont_chisq_dof'][0]
+        # for i in range(len(end_time)):
+            # call the function, get the tuple, and put the thing in the array
