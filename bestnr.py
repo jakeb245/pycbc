@@ -1,11 +1,13 @@
 import numpy as np
 
+
 def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
            power_chisq, power_dof, snr_threshold=6, sngl_thresh=4.0, chisq_threshold=None):
     """
     An attempt to replicate the BestNR algorithm from coh_ptf into pycbc_multi_inspiral.
     Rather than use coherent data, this is a test using the single detector chisqs and snrs.
     Some stuff was ignored, I'm just looking to see if the results of the bank and auto chisqs are good.
+    Use order H1, L1
 
     Parameters
     ----------
@@ -153,5 +155,16 @@ if __name__ == '__main__':
         power_dof = h1['chisq_dof'][0]
         bank_dof = h1['bank_chisq_dof'][0]
         auto_dof = h1['cont_chisq_dof'][0]
-        # for i in range(len(end_time)):
+        for i in range(len(end_time)):
             # call the function, get the tuple, and put the thing in the array
+            bestnr_tuple = bestnr(coh_snr[i], (snr_h1[i], snr_l1[i]), (bank_h1[i], bank_l1[i]), bank_dof,
+                                  (auto_h1[i], auto_l1[i]), auto_dof, (power_h1[i], power_l1[i]), power_dof)
+
+            bestnr_h1.append(bestnr_tuple[0])
+            bestnr_l1.append(bestnr_tuple[1])
+
+        # Output into csv file
+        writer.writerow(header)
+        for i in range(len(end_time)):
+            writer.writerow([end_time[i], coh_snr[i], snr_h1[i], snr_l1[i], power_h1[i], power_l1[i],
+                             bank_h1[i], bank_l1[i], auto_h1[i], auto_l1[i], bestnr_h1[i], bestnr_l1[i]])
