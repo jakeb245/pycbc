@@ -122,11 +122,11 @@ if __name__ == '__main__':
             coh_snr.append(i)
 
         # SNR H1
-        for i in h1['snr']:
+        for i in h1['snr_h1']:
             snr_h1.append(i)
 
         # SNR L1
-        for i in l1['snr']:
+        for i in l1['snr_l1']:
             snr_l1.append(i)
 
         # Power chisq
