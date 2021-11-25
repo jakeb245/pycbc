@@ -126,7 +126,7 @@ if __name__ == '__main__':
             snr_h1.append(i)
 
         # SNR L1
-        for i in l1['snr_l1']:
+        for i in l1['snr_l']:
             snr_l1.append(i)
 
         # Power chisq
