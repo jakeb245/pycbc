@@ -157,8 +157,9 @@ if __name__ == '__main__':
         auto_dof = 80
         for i in range(len(end_time)):
             # call the function, get the tuple, and put the thing in the array
-            bestnr_tuple = bestnr(coh_snr[i], (snr_h1[i], snr_l1[i]), (bank_h1[i], bank_l1[i]), bank_dof,
-                                  (auto_h1[i], auto_l1[i]), auto_dof, (power_h1[i], power_l1[i]), power_dof)
+            bestnr_tuple = bestnr(coh_snr[i], np.array([snr_h1[i], snr_l1[i]]), np.array([bank_h1[i], bank_l1[i]]),
+                                  bank_dof, np.array([auto_h1[i], auto_l1[i]]), auto_dof,
+                                  np.array([power_h1[i], power_l1[i]]), power_dof)
 
             bestnr_h1.append(bestnr_tuple[0])
             bestnr_l1.append(bestnr_tuple[1])
