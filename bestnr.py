@@ -145,16 +145,16 @@ if __name__ == '__main__':
 
         # Auto chisq
         for i in h1['cont_chisq']:
-            power_h1.append(i)
+            auto_h1.append(i)
 
         for i in l1['cont_chisq']:
-            power_l1.append(i)
+            auto_l1.append(i)
 
         # Now get bestNR
         # get chisq dofs
         power_dof = h1['chisq_dof'][0]
         bank_dof = h1['bank_chisq_dof'][0]
-        auto_dof = h1['cont_chisq_dof'][0]
+        auto_dof = 80
         for i in range(len(end_time)):
             # call the function, get the tuple, and put the thing in the array
             bestnr_tuple = bestnr(coh_snr[i], (snr_h1[i], snr_l1[i]), (bank_h1[i], bank_l1[i]), bank_dof,
