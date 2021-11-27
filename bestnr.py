@@ -55,7 +55,7 @@ def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
     # New auto SNR calculation
     new_auto = np.ones(len(auto_chisq))
     for i in range(len(new_auto)):
-        if reduced_auto > 1:
+        if reduced_auto[i] > 1:
             new_auto[i] = sngl_snr[i] / ((1+reduced_auto[i]**(index/nhigh))/2)**(1.0/index)
         else:
             new_auto[i] = sngl_snr[i]
