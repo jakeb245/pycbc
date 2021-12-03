@@ -29,6 +29,9 @@ import pycbc.detector
 import numpy as np
 
 import time
+from guppy import hpy
+
+h = hpy()
 
 time_init = time.time()
 
@@ -707,6 +710,8 @@ with ctx:
             )
         event_mgr.finalize_template_events()
 event_mgr.write_events(opt.output)
+
+print(h.heap())
 
 logging.info("Finished")
 logging.info("Time to complete analysis: %s" % str(time.time() - time_init))
