@@ -30,9 +30,6 @@ import numpy as np
 
 import time
 
-from memory_profiler import profile
-
-
 
 time_init = time.time()
 
@@ -639,7 +636,6 @@ with ctx:
                 chisq = {}
                 chisq_dof = {}
                 for ifo in opt.instruments:
-                    @profile
                     chisq[ifo], chisq_dof[ifo] = power_chisq.values(
                         corr_dict[ifo],
                         coherent_ifo_triggers[ifo] / norm_dict[ifo],
@@ -671,13 +667,11 @@ with ctx:
                 num_events = len(reweighted_snr)
 
                 for ifo in opt.instruments:
-                    @profile
                     ifo_out_vals['bank_chisq'], ifo_out_vals['bank_chisq_dof'] = \
                         bank_chisq.values(template, stilde[ifo].psd, stilde[ifo],
                                           coherent_ifo_triggers[ifo] /
                                           norm_dict[ifo], norm_dict[ifo],
                                           coinc_idx_det_frame[ifo] + stilde[ifo].analyze.start)
-                    @profile
                     ifo_out_vals['cont_chisq'] = autochisq.values(
                         snr[ifo] / norm_dict[ifo], coinc_idx_det_frame[ifo],
                         template, stilde[ifo].psd, norm_dict[ifo],
