@@ -30,6 +30,8 @@ import numpy as np
 
 import time
 
+from memory_profiler import profile
+
 
 
 time_init = time.time()
