@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
@@ -86,19 +87,36 @@ def bestnr(coherent_snr, sngl_snr, bank_chisq, bank_dof, auto_chisq, auto_dof,
     return new_power
 
 
-if __name__ == '__main__':
-    import csv
-    import h5py
-    import argparse
+def bestnr_events_plot():
+    """
+    Generate plot of False Alarm Probability over BestNR
 
-    parser = argparse.ArgumentParser(usage='', description='Generate BestNR statistic')
-    parser.add_argument('--output', type=str)
-    parser.add_argument('--trigger-file', type=str)
-    opt = parser.parse_args()
+    Returns
+    -------
+    none
+    """
+    pass
 
-    in_file = opt.trigger_file
-    file_name = opt.output
 
+def bestnr_efficiency_curve():
+    """
+    Generate efficiency curve using BestNR
+
+    Returns
+    -------
+    none
+    """
+    pass
+
+
+def write_bestnr_csv(in_file, file_name):
+    """
+    Writes BestNR output data into .csv file
+
+    Returns
+    -------
+    none
+    """
     hdf_file = h5py.File(in_file)
     net = hdf_file['network']
     h1 = hdf_file['H1']
@@ -176,3 +194,17 @@ if __name__ == '__main__':
         for i in range(len(end_time)):
             writer.writerow([end_time[i], coh_snr[i], snr_h1[i], snr_l1[i], power_h1[i], power_l1[i],
                              bank_h1[i], bank_l1[i], auto_h1[i], auto_l1[i], bestnr_h1[i], bestnr_l1[i]])
+
+if __name__ == '__main__':
+    import csv
+    import h5py
+    import argparse
+
+    parser = argparse.ArgumentParser(usage='', description='Generate BestNR statistic')
+    parser.add_argument("--make-csv", type='str', action='store_true')
+    parser.add_argument("--csv-output", type='str')
+    parser.add_argument('--trig-input', type='str', required=True)
+    opt = parser.parse_args()
+
+    if opt.make_csv:
+        write_bestnr_csv(opt.trig_input, opt.csv_output)
