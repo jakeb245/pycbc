@@ -703,7 +703,8 @@ def construct_trials(seg_files, seg_dict, ifos, slide_dict, vetoes):
         if vetoes is not None:
             slid_vetoes = _slide_vetoes(vetoes, slide_dict, slide_id)
         else:
-            slid_vetoes = dict.fromkeys(ifos)
+            slid_vetoes = {ifo: ligo.segments.segmentlist() for ifo in ifos}
+
 
         # Construct trial list and check against buffer
         trial_dict[slide_id] = segments.segmentlist()
