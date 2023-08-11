@@ -34,10 +34,7 @@ from pycbc.detector import Detector
 from pycbc import init_logging
 from pycbc.results import save_fig_with_metadata
 from pycbc.results import pygrb_postprocessing_utils as ppu
-try:
-    from glue.ligolw import lsctables
-except ImportError:
-    pass
+
 
 plt.switch_backend('Agg')
 rc("image")
@@ -98,6 +95,9 @@ parser.add_argument("-g", "--glitch-check-factor", action="store",
                     "exclusion efficiencies this value is multiplied " +
                     "to the offsource around the injection trigger to " +
                     "determine if it is just a loud glitch.")
+parser.add_argument("--found-missed-file", action="store", type=str,
+                    default=None, help="Location of found/missed "
+                    "injections and trigger file")
 parser.add_argument("--injection-set-name", action="store", type=str,
                     default="", help="Name of the injection set to be " +
                     "used in the plot title.")
@@ -165,7 +165,7 @@ ifos, vetoes = ppu.extract_ifos_and_vetoes(trig_file, opts.veto_files,
 
 # Load triggers, time-slides, and segment dictionary
 logging.info("Loading triggers.")
-trigs = ppu.load_xml_table(trig_file, lsctables.MultiInspiralTable.tableName)
+trigs = ppu.load_triggers(trig_file, vetoes)
 logging.info("%d triggers loaded.", len(trigs))
 logging.info("Loading timeslides.")
 slide_dict = ppu.load_time_slides(trig_file)
