@@ -226,8 +226,8 @@ max_bestnr, _, full_time_veto_max_bestnr =\
 if onsource_file:
 
     # Get trigs
-    on_trigs = ppu.load_xml_table(onsource_file, "multi_inspiral")
-    logging.info("%d onsource triggers loaded.", len(on_trigs))
+    on_trigs = ppu.load_triggers(onsource_file, vetoes)
+    logging.info("%d onsource triggers loaded.", on_trigs['network/event_id'].shape())
 
     # Separate off chirp mass column
     on_mchirp = on_trigs.get_column('mchirp')

@@ -454,22 +454,22 @@ def get_bestnrs(trigs, q=4.0, n=3.0, null_thresh=(4.25, 6), snr_threshold=6.,
 def sort_trigs(trial_dict, trigs, slide_dict, seg_dict):
     """Constructs sorted triggers from a trials dictionary"""
 
-    # Do slide_id: list of event IDs
     sorted_trigs = {}
 
     # Begin by sorting the triggers into each slide
     for slide_id in slide_dict:
         sorted_trigs[slide_id] = []
-    for event_id in trigs['network/event_id']:
-        sorted_trigs[trigs['network/slide_id'][event_id]].append(event_id)
+    for i in range(trigs['network/event_id'].len()):
+        slide_id = trigs['network/slide_id'][i]
+        sorted_trigs[slide_id].append(i)
 
     for slide_id in slide_dict:
         # These can only *reduce* the analysis time
         curr_seg_list = seg_dict[slide_id]
 
         # Check the triggers are all in the analysed segment lists
-        for event_id in sorted_trigs[slide_id]:
-            end_time = trigs['network/end_time_gc'][event_id]
+        for idx in sorted_trigs[slide_id]:
+            end_time = trigs['network/end_time_gc'][idx]
             if end_time not in curr_seg_list:
                 # This can be raised if the trigger is on the segment boundary,
                 # so check if the trigger is within 1/100 of a second within
@@ -484,8 +484,10 @@ def sort_trigs(trial_dict, trigs, slide_dict, seg_dict):
         # END OF CHECK #
 
         # Keep triggers that are in trial_dict
-        sorted_trigs[slide_id] = [event_id for event_id in sorted_trigs[slide_id]
-                                  if trigs['network/end_time_gc'][event_id] in trial_dict[slide_id]]
+
+        sorted_trigs[slide_id] = [idx for idx in sorted_trigs[slide_id]
+                                  if trigs['network/end_time_gc'][idx]
+                                  in trial_dict[slide_id]]
 
     return sorted_trigs
 
