@@ -239,14 +239,15 @@ if onsource_file:
 
     # Calculate BestNRs and record loudest trig by BestNR
     if on_trigs:
-        on_trigs_bestnrs = ppu.get_bestnrs(on_trigs,
-                                           q=chisq_index, n=chisq_nhigh,
-                                           null_thresh=null_thresh,
-                                           snr_threshold=snr_thresh,
-                                           sngl_snr_threshold=sngl_snr_thresh,
-                                           chisq_threshold=new_snr_thresh,
-                                           null_grad_thresh=null_grad_thresh,
-                                           null_grad_val=null_grad_val)
+        on_trigs_bestnrs = on_trigs['network/reweighted_snr'][:]
+        # on_trigs_bestnrs = ppu.get_bestnrs(on_trigs,
+        #                                    q=chisq_index, n=chisq_nhigh,
+        #                                    null_thresh=null_thresh,
+        #                                    snr_threshold=snr_thresh,
+        #                                    sngl_snr_threshold=sngl_snr_thresh,
+        #                                    chisq_threshold=new_snr_thresh,
+        #                                    null_grad_thresh=null_grad_thresh,
+        #                                    null_grad_val=null_grad_val)
         loud_on_bestnr_trigs, loud_on_bestnr = \
             np.asarray([[x, y] for y, x in sorted(zip(on_trigs_bestnrs, on_trigs),
                                                   key=lambda elem: elem[0],
@@ -264,9 +265,9 @@ if onsource_file:
         num_trials_louder = 0
         tot_off_snr = np.array([])
         for slide_id in slide_dict:
-            num_trials_louder += sum(time_veto_max_bestnr[slide_id] > \
+            num_trials_louder += sum(time_veto_max_bestnr[slide_id] >
                                      loud_on_bestnr)
-            tot_off_snr = np.concatenate([tot_off_snr,\
+            tot_off_snr = np.concatenate([tot_off_snr,
                                           time_veto_max_bestnr[slide_id]])
         #fap_test = sum(tot_off_snr > loud_on_bestnr)/total_trials
         loud_on_fap = num_trials_louder/total_trials
@@ -274,7 +275,7 @@ if onsource_file:
 else:
     tot_off_snr = np.array([])
     for slide_id in slide_dict:
-        tot_off_snr = np.concatenate([tot_off_snr,\
+        tot_off_snr = np.concatenate([tot_off_snr,
                                       time_veto_max_bestnr[slide_id]])
     med_snr = np.median(tot_off_snr)
     #loud_on_fap = sum(tot_off_snr > med_snr)/total_trials
