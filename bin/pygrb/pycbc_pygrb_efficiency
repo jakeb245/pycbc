@@ -166,7 +166,7 @@ ifos, vetoes = ppu.extract_ifos_and_vetoes(trig_file, opts.veto_files,
 # Load triggers, time-slides, and segment dictionary
 logging.info("Loading triggers.")
 trigs = ppu.load_triggers(trig_file, vetoes)
-logging.info("%d triggers loaded.", len(trigs))
+logging.info("%d triggers loaded.", trigs['network/event_id'].len())
 logging.info("Loading timeslides.")
 slide_dict = ppu.load_time_slides(trig_file)
 logging.info("Loading segments.")
@@ -227,7 +227,7 @@ if onsource_file:
 
     # Get trigs
     on_trigs = ppu.load_triggers(onsource_file, vetoes)
-    logging.info("%d onsource triggers loaded.", on_trigs['network/event_id'].shape())
+    logging.info("%d onsource triggers loaded.", on_trigs['network/event_id'].len())
 
     # Separate off chirp mass column
     on_mchirp = on_trigs.get_column('mchirp')
