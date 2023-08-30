@@ -407,7 +407,7 @@ if do_injections:
         found_on_bestnr[key] = np.zeros(num_dist_bins_plus_one)
 
     # Construct FAP list for all found injections
-    inj_fap = np.zeros(len(found_injs))
+    inj_fap = np.zeros(len(found_inj['dist']))
     inj_fap[nonzero_fap] = g_ifar['stat']
 
     # Calculate the amplitude error
@@ -441,7 +441,7 @@ if do_injections:
                  num_mc_injs)
 
     # Check injections against on source
-    more_sig_than_onsource = np.ndarray(len(found_injs))
+    more_sig_than_onsource = np.ndarray(len(found_inj['dist']))
     if onsource_file:
         more_sig_than_onsource = (inj_fap <= loud_on_fap)
     else:
