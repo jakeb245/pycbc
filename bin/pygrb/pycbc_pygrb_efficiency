@@ -302,7 +302,7 @@ if do_injections:
 
     # Extract columns of triggers
     found_trig = {}
-    found_trig['mchirp'] = pycbc.conversions.mchirp_from_mass1_mass2(
+    found_trig['mchirp'] = mchirp_from_mass1_mass2(
         inj_file['network/mass1'][:], inj_file['network/mass2'][:])
     found_trig['bestnr'] = inj_file['network/reweighted_snr'][:]
     # found_trig['bestnr'] = ppu.get_bestnrs(found_trigs, q=chisq_index,
@@ -336,7 +336,9 @@ if do_injections:
     g_ifar['stat'] = g_ifar['stat'] / total_trials
 
     # Set the sigma values
-    inj_sigma = found_trigs.get_sigmasqs()
+    inj_sigma = {ifo: inj_file[f'{ifo}/sigmasq'][:] for ifo in ifos}
+    for ifo in ifos:
+        inj_sigma[ifo] = inj_file[f'{ifo}/sigmasq'][:]
     # If the sigmasqs are not populated, we can still do calibration errors,
     # but only in the 1-detector case
     for ifo in ifos:
@@ -358,7 +360,7 @@ if do_injections:
                                                 found_inj['ra'], found_inj['dec'],
                                                 found_inj['time'])
 
-    inj_sigma_mult = (np.asarray(list(inj_sigma.values())) *\
+    inj_sigma_mult = (np.asarray(list(inj_sigma.values())) *
                       np.asarray(list(f_resp.values())))
 
     inj_sigma_tot = inj_sigma_mult[0, :]
@@ -369,7 +371,7 @@ if do_injections:
     for ifo in ifos:
         inj_sigma_mean[ifo] = ((inj_sigma[ifo]*f_resp[ifo])/inj_sigma_tot).mean()
 
-    logging.info("%d found injections analysed.", len(found_injs))
+    logging.info("%d found injections analysed.", len(found_inj['time']))
 
     # Missed injections (ones not recovered at all)
     missed_injs = ppu.load_injections(found_missed_file, vetoes, sim_table=True)
