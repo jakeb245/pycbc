@@ -254,6 +254,7 @@ if onsource_file:
             np.asarray([[x, y] for y, x in sorted(zip(on_trigs_bestnrs, on_trigs),
                                                   key=lambda elem: elem[0],
                                                   reverse=True)])[0]
+    loud_on_bestnr = float(loud_on_bestnr)
 
     # If the loudest event has bestnr = 0, there is no event at all!
     if loud_on_bestnr == 0:
