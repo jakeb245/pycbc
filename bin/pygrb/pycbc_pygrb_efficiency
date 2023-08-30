@@ -375,17 +375,14 @@ if do_injections:
 
     logging.info("%d found injections analysed.", len(found_inj['time']))
 
-    # Missed injections (ones not recovered at all)
-    missed_injs = ppu.load_injections(found_missed_file, vetoes, sim_table=True)
-
     # Process missed injections 'missed_inj'
     missed_inj = {}
-    missed_inj['dist'] = np.asarray(missed_injs.get_column('distance'))
+    missed_inj['dist'] = inj_file['missed/distance'][:]
 
-    logging.info("%d missed injections analysed.", len(missed_injs))
+    logging.info("%d missed injections analysed.", len(missed_inj['dist']))
 
     # Create new set of injections for efficiency calculations
-    total_injs = len(found_injs) + len(missed_injs)
+    total_injs = len(found_inj['dist']) + len(missed_inj['dist'])
     long_inj = {}
     long_inj['dist'] = stats.uniform.rvs(size=total_injs) * (upper_dist-lower_dist) +\
                        upper_dist
@@ -393,10 +390,10 @@ if do_injections:
     logging.info("%d long distance injections created.", total_injs)
 
     # Set distance bins and data arrays
-    dist_bins = zip(np.arange(lower_dist, upper_dist + (upper_dist-lower_dist),\
-                             (upper_dist-lower_dist)/num_bins),\
-                    np.arange(lower_dist, upper_dist + (upper_dist-lower_dist),\
-                             (upper_dist-lower_dist)/num_bins) +\
+    dist_bins = zip(np.arange(lower_dist, upper_dist + (upper_dist-lower_dist),
+                             (upper_dist-lower_dist)/num_bins),
+                    np.arange(lower_dist, upper_dist + (upper_dist-lower_dist),
+                             (upper_dist-lower_dist)/num_bins) +
                              (upper_dist-lower_dist)/num_bins)
     dist_bins = list(dist_bins)
 
