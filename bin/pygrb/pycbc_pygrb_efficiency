@@ -231,7 +231,8 @@ if onsource_file:
     logging.info("%d onsource triggers loaded.", on_trigs['network/event_id'].len())
 
     # Separate off chirp mass column
-    on_mchirp = on_trigs.get_column('mchirp')
+    on_mchirp = mchirp_from_mass1_mass2(on_trigs['network/mass1'][:],
+                                        on_trigs['network/mass2'][:])
 
     # Set loudest event arrays
     #loud_on_bestnr_trigs = None
