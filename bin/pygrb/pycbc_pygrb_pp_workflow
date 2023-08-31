@@ -366,6 +366,14 @@ offtrials = ["offtrial_%s" % (i+1) for i in range(num_trials)]
 inj_sets = wflow.cp.get_subsections('injections')
 # TODO: (randomly extracted) offrtials pages
 
+for trial in offtrials:
+    for inj_set in inj_sets:
+        inj_file = list(filter(lambda x: inj_set.lower() in x.lower(), inj_files))
+        inj_file = inj_file[0] if len(inj_file) == 1 else None
+        tags = [inj_set, trial]
+        plot_node, output_files = _workflow.make_pygrb_plot(wflow, "pygrb_efficiency",
+                                                            out_dir, inj_file=inj_files,
+                                                            trig_file=trig_file, tags=tags)
 
 #
 # Trigger Followups (TODO)
