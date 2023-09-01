@@ -374,6 +374,10 @@ for trial in offtrials:
         plot_node, output_files = _workflow.make_pygrb_plot(wflow, "pygrb_efficiency",
                                                             out_dir, inj_file=inj_files,
                                                             trig_file=trig_file, tags=tags)
+        plotting_nodes.append(plot_node)
+        # pycbc_pygrb_efficiency outputs multiple plots
+        for f in output_files:
+            files.append(f)
 
 #
 # Trigger Followups (TODO)
