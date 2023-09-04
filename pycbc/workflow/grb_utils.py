@@ -506,8 +506,6 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
     if exec_name == 'pygrb_efficiency':
         # In this case tags[0] is the offtrial number
         logging.info("Setting up efficiency specific opts")
-        fm_file = resolve_url_to_file(inj_file)
-        node.add_input_opt('--found-missed-file', fm_file)
         onsource_file = configparser_value_to_file(workflow.cp,
                                                    'workflow', 'onsource-file')
         node.add_input_opt('--onsource-file', onsource_file)
