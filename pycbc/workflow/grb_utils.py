@@ -29,6 +29,7 @@ http://pycbc.org/pycbc/latest/html/workflow.html
 """
 
 import glob
+import logging
 import os
 import numpy as np
 from scipy.stats import rayleigh
@@ -502,13 +503,13 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
     if ifo:
         node.add_opt('--ifo', ifo)
     # Additional input files (passed as File instances)
-    # if exec_name in ['pygrb_plot_injs_results', 'pygrb_efficiency']:
-    #     missed_file = inj_file
-    #     node.add_input_opt('--missed-file', missed_file)
-    # FIXME: need found-missed-file option
+    if exec_name in ['pygrb_plot_injs_results', 'pygrb_efficiency']:
+        fm_file = resolve_url_to_file(inj_file)
+        node.add_input_opt('--found-missed-file', fm_file)
     # Output files and final input file (passed as a File instance)
     if exec_name == 'pygrb_efficiency':
         # In this case tags[0] is the offtrial number
+        logging.info("Setting up efficiency specific opts")
         onsource_file = configparser_value_to_file(workflow.cp,
                                                    'workflow', 'onsource-file')
         node.add_input_opt('--onsource-file', onsource_file)
