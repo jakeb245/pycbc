@@ -373,7 +373,7 @@ for trial in offtrials:
         inj_file = inj_file[0] if len(inj_file) == 1 else None
         tags = [inj_set, trial]
         plot_node, output_files = _workflow.make_pygrb_plot(wflow, "pygrb_efficiency",
-                                                            out_dir, inj_file=inj_files,
+                                                            out_dir, inj_file=inj_file,
                                                             trig_file=trig_file, tags=tags)
 
         plotting_nodes.append(plot_node)
