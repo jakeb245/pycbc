@@ -50,9 +50,9 @@ parser = argparse.ArgumentParser(description=__doc__[1:])
 parser.add_argument("--version", action="version", version=__version__)
 parser.add_argument("-v", "--verbose", default=False, action="store_true",
                     help="Verbose output")
-parser.add_argument("-t", "--trig-file", action="store",
+parser.add_argument("-t", "--trig-files", action="store",
                     default=None, required=True,
-                    help="The location of the trigger file")
+                    help="The location of the trigger files")
 parser.add_argument("-i", "--inj-files", action="store",
                     default=None, nargs="+",
                     help="Location(s) of input injection results file(s)")
@@ -85,14 +85,28 @@ rdir = layout.SectionNumber('webpage', ['offsource_triggers_vs_time',
 _workflow.makedir(rdir.base)
 _workflow.makedir(rdir['workflow'])
 
-# Input trigger file
-trig_file = start_rundir+'/'+args.trig_file 
+# Input trigger files
+trig_files = [start_rundir+'/'+el for el in args.trig_files]
+offsource_file = None
+onsource_file = None
+all_times_file = None
+offtrial_files = []
+for file in trig_files:
+    if "OFFSOURCE" in file:
+        offsource_file = file
+    elif "ONSOURCE" in file:
+        onsource_file = file
+    elif "ALL_TIMES" in file:
+        all_times_file = file
+    elif "OFFTRIAL" in file:
+        offtrial_files.append(file)
+offtrial_files = offtrial_files.sort()
 
 # Input injection files and injection set names
-inj_files = [start_rundir+'/'+el for el in args.inj_files] 
+inj_files = [start_rundir+'/'+el for el in args.inj_files]
 
 # IFOs actually used: determined by data availability
-ifos = extract_ifos(trig_file)
+ifos = extract_ifos(trig_files[0])
 wflow.ifos = ifos
 
 plotting_nodes = []

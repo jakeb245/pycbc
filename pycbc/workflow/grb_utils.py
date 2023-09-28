@@ -724,8 +724,7 @@ def setup_pygrb_minifollowups(workflow, followups_file,
     job.add_into_workflow(workflow)
 
 
-def setup_pygrb_results_workflow(workflow, res_dir, trig_file,
-                                 inj_files, tags=None,
+def setup_pygrb_results_workflow(workflow, res_dir, pp_files, tags=None,
                                  explicit_dependencies=None):
     """Create subworkflow to produce plots, tables,
     and results webpage for a PyGRB analysis.
@@ -736,8 +735,8 @@ def setup_pygrb_results_workflow(workflow, res_dir, trig_file,
         The core workflow instance we are populating
     res_dir: The post-processing directory where
         results (plots, etc.) will be stored
-    trig_file: The triggers File object
-    inj_files: FileList of injection results
+    pp_files: The FileList of combined+clustered trigger files
+        and injection results
     tags: {None, optional}
         Tags to add to the executables
     excplicit_dependencies: nodes that must precede this
@@ -760,7 +759,14 @@ def setup_pygrb_results_workflow(workflow, res_dir, trig_file,
                      tags=tags)
     node = exe.create_node()
     # Grab and pass all necessary files
-    node.add_input_opt('--trig-file', trig_file)
+    trig_files = FileList([])
+    inj_files = FileList([])
+    for file in pp_files:
+        if file.tags.contains("INJECTIONS") and file.tags.contains("FILTERED"):
+            inj_files.append(file)
+        elif file.tags.contains("CLUSTERED"):
+            trig_files.append(file)
+    node.add_input_list_opt('--trig-files', trig_files)
     if workflow.cp.has_option('workflow', 'veto-files'):
         veto_files = build_veto_filelist(workflow)
         node.add_input_list_opt('--veto-files', veto_files)
