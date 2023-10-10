@@ -51,7 +51,7 @@ parser.add_argument("--version", action="version", version=__version__)
 parser.add_argument("-v", "--verbose", default=False, action="store_true",
                     help="Verbose output")
 parser.add_argument("-t", "--trig-files", action="store",
-                    default=None, required=True,
+                    default=None, required=True, nargs="+",
                     help="The location of the trigger files")
 parser.add_argument("-i", "--inj-files", action="store",
                     default=None, nargs="+",
