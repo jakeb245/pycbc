@@ -760,8 +760,8 @@ def setup_pygrb_results_workflow(workflow, res_dir, pp_files, tags=None,
     node = exe.create_node()
     # Grab and pass all necessary files
     num_trials = int(workflow.cp.get('trig_combiner', 'num-trials'))
-    trig_files = pp_files[1]
-    inj_files = pp_files[-1:4+num_trials]  # See pygrb_setup_pp_workflow
+    trig_files = pp_files[1:4+num_trials]
+    inj_files = pp_files[-1]
     node.add_input_list_opt('--trig-files', trig_files)
     if workflow.cp.has_option('workflow', 'veto-files'):
         veto_files = build_veto_filelist(workflow)
