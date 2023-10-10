@@ -760,10 +760,10 @@ def setup_pygrb_results_workflow(workflow, res_dir, pp_files, tags=None,
     node = exe.create_node()
     # Grab and pass all necessary files
     trig_files = FileList([])
-    inj_files = FileList([])
+    inj_files = pp_files[-1]
     for file in pp_files:
-        if file.tags.contains("INJECTIONS") and file.tags.contains("FILTERED"):
-            inj_files.append(file)
+        if file is FileList:
+            continue
         elif file.tags.contains("CLUSTERED"):
             trig_files.append(file)
     node.add_input_list_opt('--trig-files', trig_files)
