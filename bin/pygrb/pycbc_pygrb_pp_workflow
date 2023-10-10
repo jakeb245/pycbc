@@ -141,7 +141,7 @@ files.append(grb_info_table)
 #
 plot_node, skygrid_plot = _workflow.make_pygrb_plot(wflow, 'pygrb_plot_skygrid',
                                                     out_dir,
-                                                    trig_file=trig_file)
+                                                    trig_file=offsource_file)
 plotting_nodes.append(plot_node)
 files.append(skygrid_plot)
 summary_layout = [(grb_info_table[0],), (skygrid_plot[0],)]
@@ -188,7 +188,7 @@ for snr_type in timeseries:
             tags = [snr_type] if inj_file is None else [snr_type, tuning_inj_set]
             plot_node, output_files = \
                 _workflow.make_pygrb_plot(wflow, 'pygrb_plot_snr_timeseries',
-                                          out_dir, trig_file=trig_file,
+                                          out_dir, trig_file=offsource_file,
                                           inj_file=inj_file, ifo=ifo,
                                           tags=tags)
             plotting_nodes.append(plot_node)
@@ -220,7 +220,7 @@ for veto in vetoes:
             tags = [veto] if inj_file is None else [veto, tuning_inj_set]
             plot_node, output_files = \
                 _workflow.make_pygrb_plot(wflow, 'pygrb_plot_chisq_veto',
-                                          out_dir, trig_file=trig_file,
+                                          out_dir, trig_file=offsource_file,
                                           inj_file=inj_file, ifo=ifo,
                                           tags=tags)
             plotting_nodes.append(plot_node)
@@ -248,7 +248,7 @@ if wflow.cp.has_section('pygrb_plot_coh_ifosnr'):
                 # Single IFO SNR vs Coherent SNR
                 plot_node, output_files = \
                     _workflow.make_pygrb_plot(wflow, 'pygrb_plot_coh_ifosnr',
-                                              out_dir, trig_file=trig_file,
+                                              out_dir, trig_file=offsource_file,
                                               inj_file=inj_file, ifo=ifo,
                                               tags=tags)
                 plotting_nodes.append(plot_node)
@@ -291,7 +291,7 @@ for nstat in nstats:
             tags = tags + [tuning_inj_set] if inj_file is not None else tags 
             plot_node, output_files = \
             _workflow.make_pygrb_plot(wflow, 'pygrb_plot_null_stats', out_dir,
-                                      trig_file=trig_file, inj_file=inj_file,
+                                      trig_file=offsource_file, inj_file=inj_file,
                                       tags=tags)
             plotting_nodes.append(plot_node)
             # We want a File, not a 1-element list with a File
@@ -331,7 +331,7 @@ for inj_set in inj_sets:
             for fm_or_mf in ['missed-on-top', 'found-on-top']:
                 tags = [y_qty, x_qty, fm_or_mf, inj_set] # TODO: last one needed?
                 plot_node, output_files = _workflow.make_pygrb_plot(wflow, 'pygrb_plot_injs_results',
-                                                                    out_dir, trig_file=trig_file,
+                                                                    out_dir, trig_file=offsource_file,
                                                                     ifo=ifo, inj_file=inj_file,
                                                                     tags=tags)
                 plotting_nodes.append(plot_node)
@@ -358,7 +358,7 @@ stats = wflow.cp.get_subsections('pygrb_plot_stats_distribution')
 for stat in stats:
     plot_node, output_file = \
         _workflow.make_pygrb_plot(wflow, 'pygrb_plot_stats_distribution',
-                                  out_dir, trig_file=trig_file,
+                                  out_dir, trig_file=offsource_file,
                                   inj_file=inj_file, tags=[stat])
     plotting_nodes.append(plot_node)
     # We want a File, not a 1-element list with a File
@@ -388,7 +388,8 @@ for trial in offtrials:
         tags = [inj_set, trial]
         plot_node, output_files = _workflow.make_pygrb_plot(wflow, "pygrb_efficiency",
                                                             out_dir, inj_file=inj_file,
-                                                            trig_file=trig_file, tags=tags)
+                                                            trig_file=offtrial_files[int(trial[-1])],
+                                                            onsource_file=onsource_file, tags=tags)
 
         plotting_nodes.append(plot_node)
         # pycbc_pygrb_efficiency outputs multiple plots

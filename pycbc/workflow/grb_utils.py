@@ -447,7 +447,8 @@ def build_segment_filelist(workflow):
 
 
 def make_pygrb_plot(workflow, exec_name, out_dir,
-                    ifo=None, inj_file=None, trig_file=None, tags=None):
+                    ifo=None, inj_file=None, trig_file=None,
+                    onsource_file=None, tags=None):
     """Adds a node for a plot of PyGRB results to the workflow"""
 
     tags = [] if tags is None else tags
@@ -506,8 +507,7 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
     if exec_name == 'pygrb_efficiency':
         # In this case tags[0] is the offtrial number
         logging.info("Setting up efficiency specific opts")
-        onsource_file = configparser_value_to_file(workflow.cp,
-                                                   'workflow', 'onsource-file')
+
         node.add_input_opt('--onsource-file', onsource_file)
         node.new_output_file_opt(workflow.analysis_time, '.png',
                                  '--background-output-file',
