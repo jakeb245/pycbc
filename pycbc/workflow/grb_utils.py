@@ -448,7 +448,7 @@ def build_segment_filelist(workflow):
 
 def make_pygrb_plot(workflow, exec_name, out_dir,
                     ifo=None, inj_file=None, trig_file=None,
-                    onsource_file=None, tags=None):
+                    onsource_file=None, seg_files=None, tags=None):
     """Adds a node for a plot of PyGRB results to the workflow"""
 
     tags = [] if tags is None else tags
@@ -509,6 +509,10 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
         logging.info("Setting up efficiency specific opts")
         node.add_input_opt('--offsource-file', resolve_url_to_file(trig_file))
         node.add_input_opt('--onsource-file', resolve_url_to_file(onsource_file))
+        seg_files_resolved = FileList([])
+        for file in seg_files:
+            seg_files_resolved.append(resolve_url_to_file(file))
+        node.add_input_list_opt('--seg-files', seg_files_resolved)
         node.new_output_file_opt(workflow.analysis_time, '.png',
                                  '--background-output-file',
                                  tags=extra_tags+['max_background'])

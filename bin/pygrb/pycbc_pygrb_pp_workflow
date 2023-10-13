@@ -105,6 +105,11 @@ offtrial_files.sort()
 # Input injection files and injection set names
 inj_files = [start_rundir+'/'+el for el in args.inj_files]
 
+# Segment files
+seg_dir = os.path.join(start_rundir, '/segments')
+seg_files = [os.path.join(seg_dir, seg_file) for seg_file in
+             ['onSourceSeg.txt', 'offSourceSeg.txt', 'bufferSeg.txt']]
+
 # IFOs actually used: determined by data availability
 ifos = extract_ifos(trig_files[0])
 wflow.ifos = ifos
@@ -389,7 +394,8 @@ for trial in offtrials:
         plot_node, output_files = _workflow.make_pygrb_plot(wflow, "pygrb_efficiency",
                                                             out_dir, inj_file=inj_file,
                                                             trig_file=offtrial_files[int(trial[-1])-1],
-                                                            onsource_file=onsource_file, tags=tags)
+                                                            onsource_file=onsource_file,
+                                                            seg_files=seg_files, tags=tags)
 
         plotting_nodes.append(plot_node)
         # pycbc_pygrb_efficiency outputs multiple plots
