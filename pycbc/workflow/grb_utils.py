@@ -508,7 +508,7 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
         # In this case tags[0] is the offtrial number
         logging.info("Setting up efficiency specific opts")
 
-        node.add_input_opt('--onsource-file', onsource_file)
+        node.add_input_opt('--onsource-file', resolve_url_to_file(onsource_file))
         node.new_output_file_opt(workflow.analysis_time, '.png',
                                  '--background-output-file',
                                  tags=extra_tags+['max_background'])
