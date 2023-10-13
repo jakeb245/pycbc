@@ -480,7 +480,7 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
         node.add_input_list_opt('--veto-files', veto_files)
     # TODO: check this for pygrb_efficiency and pygrb_plot_stats_distribution
     # They originally wanted seg_files
-    if exec_name in ['pygrb_plot_injs_results', 'pygrb_efficiency',
+    if exec_name in ['pygrb_plot_injs_results',
                      'pygrb_plot_snr_timeseries',
                      'pygrb_plot_stats_distribution']:
         trig_time = workflow.cp.get('workflow', 'trigger-time')
@@ -765,7 +765,7 @@ def setup_pygrb_results_workflow(workflow, res_dir, pp_files, tags=None,
     # Grab and pass all necessary files
     num_trials = int(workflow.cp.get('trig_combiner', 'num-trials'))
     trig_files = pp_files[1:4+num_trials]
-    inj_files = pp_files[-1]
+    inj_files = pp_files[-2]
     node.add_input_list_opt('--trig-files', trig_files)
     if workflow.cp.has_option('workflow', 'veto-files'):
         veto_files = build_veto_filelist(workflow)
