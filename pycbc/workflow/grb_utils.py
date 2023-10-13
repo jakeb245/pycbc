@@ -468,7 +468,7 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
     # if exec_name in ['pygrb_plot_chisq_veto', 'pygrb_plot_coh_ifosnr',
     #                  'pygrb_plot_null_stats', 'pygrb_plot_skygrid',
     #                  'pygrb_plot_snr_timeseries']:
-    if trig_file is not None:
+    if (trig_file is not None) and (exec_name != 'pygrb_efficiency'):
         node.add_input_opt('--trig-file', resolve_url_to_file(trig_file))
     # Pass the veto and segment files and options
     if workflow.cp.has_option('workflow', 'veto-category'):
@@ -507,7 +507,7 @@ def make_pygrb_plot(workflow, exec_name, out_dir,
     if exec_name == 'pygrb_efficiency':
         # In this case tags[0] is the offtrial number
         logging.info("Setting up efficiency specific opts")
-
+        node.add_input_opt('--offsource-file', resolve_url_to_file(trig_file))
         node.add_input_opt('--onsource-file', resolve_url_to_file(onsource_file))
         node.new_output_file_opt(workflow.analysis_time, '.png',
                                  '--background-output-file',
