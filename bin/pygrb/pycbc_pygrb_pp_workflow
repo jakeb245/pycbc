@@ -106,7 +106,7 @@ offtrial_files.sort()
 inj_files = [start_rundir+'/'+el for el in args.inj_files]
 
 # Segment files
-seg_dir = os.path.join(start_rundir, '/segments')
+seg_dir = os.path.join(start_rundir, 'segments')
 seg_files = [os.path.join(seg_dir, seg_file) for seg_file in
              ['onSourceSeg.txt', 'offSourceSeg.txt', 'bufferSeg.txt']]
 
