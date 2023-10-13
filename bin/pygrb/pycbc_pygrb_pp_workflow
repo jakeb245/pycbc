@@ -100,7 +100,7 @@ for file in trig_files:
         all_times_file = file
     elif "OFFTRIAL" in file:
         offtrial_files.append(file)
-offtrial_files = offtrial_files.sort()
+offtrial_files.sort()
 
 # Input injection files and injection set names
 inj_files = [start_rundir+'/'+el for el in args.inj_files]
